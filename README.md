@@ -1,10 +1,15 @@
 To start the react app
 ```
 npm install
+node server.js
+```
+Open another terminal
+```
 cd registerprotal
 npm install
 npm start
 ```
+`http://localhost:3000/dashboard` to get dashboad
 ## Screenshots of website
 Register user
 ![Screenshot 2023-02-15 215546](https://user-images.githubusercontent.com/91683673/219093886-9187805c-45ae-4f8e-a252-18062690cebd.png)
