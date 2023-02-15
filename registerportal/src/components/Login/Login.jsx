@@ -11,9 +11,25 @@ import ModalHeader from "react-bootstrap/ModalHeader";
 import ModalFooter from "react-bootstrap/ModalFooter";
 import ModalTitle from "react-bootstrap/ModalTitle";
 import Button from "react-bootstrap/Button";
+import Web3 from 'web3';
 
 
-// import "../Register/register.css"
+const connectMetamask = async () => {
+    if (window.ethereum) {
+      try {
+        await window.ethereum.enable();
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        console.log(accounts[0]); // prints the first account address
+        // save the account address to your user object
+        // setUser({ ...User, address: accounts[0] });
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      window.alert("Please install Metamask to connect");
+    }
+  }
+
 
 function UserLogin() {
     const navigate = useNavigate();
@@ -68,7 +84,9 @@ const userValidation = async (e) =>{
                                 <label htmlFor="your_pass"><i className="zmdi zmdi-lock"></i></label>
                                 <input type="password" name="password" id="your_pass" placeholder="Password" className='form-control border-0 shadow-none' value={User.password} onChange={userInput}/>
                             </div>
-                            
+                            <div class="form-group form-button">
+                                <input type="button" name="Metamask" id="M_M" value="Connect_Metamask" onClick={connectMetamask}/>
+                            </div>
                             <div className="form-group form-button">
                                 <input type="button" name="signin" id="signin" className="form-submit" value="Log in" onClick={userValidation}/>
                             </div>

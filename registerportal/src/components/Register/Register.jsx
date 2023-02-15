@@ -6,10 +6,11 @@ import "./register.css";
 import image from "../../Images/signup-image.jpg";
 import registerUser from "../../API/api";
 import { getRegisteredUsers ,getApprovedUsers } from '../../API/api';
+import Web3 from 'web3';
 
 function Register() {
     
-    const [User ,setUser]  = useState({name: "" ,city : "" , email: "",password: "" ,cpassword: "" }) ;
+    const [User ,setUser]  = useState({name: "" ,city : "" , email: "",password: "" ,cpassword: "", account: "" }) ;
     const navigate = useNavigate();
     let name ,value ;
     const Input = (e)=> {
@@ -19,9 +20,25 @@ function Register() {
     
     }
   
+    const connectMetamask = async () => {
+        if (window.ethereum) {
+          try {
+            await window.ethereum.enable();
+            const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+            console.log(accounts[0]); // prints the first account address
+            // save the account address to your user object
+            setUser({ ...User, address: accounts[0] });
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          window.alert("Please install Metamask to connect");
+        }
+      }
+
     const postdata = async (e)=>{
       e.preventDefault();
-      const { name,city,email ,password,cpassword } = User ;
+      const { name,city,email ,password,cpassword, account } = User ;
       const registeredUsers = await getRegisteredUsers() ;
     const userData =  registeredUsers.filter((user)=> user.email === email);
     
@@ -78,6 +95,9 @@ function Register() {
                                 <input type="password" name="cpassword" id="re_pass" placeholder="Repeat your password" className='form-control border-0 shadow-none' value={User.cpassword} onChange={Input}/>
                             </div>
                         
+                            <div class="form-group form-button">
+                                <input type="button" name="Metamask" id="M_M" value="Connect_Metamask" onClick={connectMetamask}/>
+                            </div>
                             <div class="form-group form-button">
                                 <input type="button" name="signup" id="signup" class="form-submit" value="Register" onClick={postdata}/>
                             </div>
